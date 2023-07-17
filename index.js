@@ -29,21 +29,18 @@ const firstUrl = "https://rickandmortyapi.com/api/character/?page=1";
 
 // ------------------------------------------
 
-// fetchData funciton
+// fetchData function
 export async function fetchCharacters(url) {
   try {
     const response = await fetch(url);
-    // console.log(response);
+    // if response ok, create cards
     if (response.ok) {
       const result = await response.json();
-      // console.log(result);
-
       const characters = result.results;
-      // console.log(characters);
-
+      // get the max Page
       maxPage = result.info.pages;
-      // console.log(maxPage);
 
+      // create cards within pages of 20 elements
       characters.forEach((character) => {
         const charName = character.name;
         const source = character.image;
@@ -61,12 +58,15 @@ export async function fetchCharacters(url) {
     console.log("Error:", error);
   }
 }
+
+// create an array with all the characters
 export let allCharacters = [];
 
 export async function createAllCharacters() {
+  // loop through all characters and make an array
   for (let i = 1; i <= maxPage; i++) {
     const url = `https://rickandmortyapi.com/api/character/?page=${i}`;
-    // console.log(url);
+
     try {
       const response = await fetch(url);
       if (response.ok) {
