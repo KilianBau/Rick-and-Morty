@@ -4,6 +4,7 @@ console.clear();
 import { createCharacterCard } from "./components/card/card.js";
 import { nextPage, prevPage } from "./components/nav-button/nav-button.js";
 import { changePagination } from "./components/nav-pagination/nav-pagination.js";
+import { searchFunc } from "./components/search-bar/search-bar.js";
 
 // variables
 export const cardContainer = document.querySelector(
@@ -12,36 +13,34 @@ export const cardContainer = document.querySelector(
 const searchBarContainer = document.querySelector(
   '[data-js="search-bar-container"]'
 );
-const searchBar = document.querySelector('[data-js="search-bar"]');
-const navigation = document.querySelector('[data-js="navigation"]');
+export const main = document.querySelector('[data-js="main"]');
+export const searchBar = document.querySelector('[data-js="search-bar"]');
+export const navigation = document.querySelector('[data-js="navigation"]');
 export const prevButton = document.querySelector('[data-js="button-prev"]');
 export const nextButton = document.querySelector('[data-js="button-next"]');
 export const pagination = document.querySelector('[data-js="pagination"]');
 
 // States
 export let maxPage;
-// export let page = 1;
+
 const searchQuery = "";
 
 const firstUrl = "https://rickandmortyapi.com/api/character/?page=1";
 
 // ------------------------------------------
 
-// fetchData funciton
+// fetchData function
 export async function fetchCharacters(url) {
   try {
     const response = await fetch(url);
-    console.log(response);
+    // if response ok, create cards
     if (response.ok) {
       const result = await response.json();
-      console.log(result);
-
       const characters = result.results;
-      console.log(characters);
-
+      // get the max Page
       maxPage = result.info.pages;
-      console.log(maxPage);
 
+      // create cards within pages of 20 elements
       characters.forEach((character) => {
         const charName = character.name;
         const source = character.image;
@@ -60,7 +59,37 @@ export async function fetchCharacters(url) {
   }
 }
 
-fetchCharacters(firstUrl);
+// create an array with all the characters
+export let allCharacters = [];
+
+export async function createAllCharacters() {
+  // loop through all characters and make an array
+  for (let i = 1; i <= maxPage; i++) {
+    const url = `https://rickandmortyapi.com/api/character/?page=${i}`;
+
+    try {
+      const response = await fetch(url);
+      if (response.ok) {
+        const result = await response.json();
+
+        const characters = result.results;
+        allCharacters = allCharacters.concat(characters);
+      } else {
+        console.log("Response is not okeee");
+      }
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  }
+  return allCharacters;
+}
+
+fetchCharacters(firstUrl).then(createAllCharacters);
+/* .then((allCharacters) => {
+    console.log(allCharacters);
+  }) */
 
 nextButton.addEventListener("click", nextPage);
 prevButton.addEventListener("click", prevPage);
+
+searchBar.addEventListener("input", searchFunc);

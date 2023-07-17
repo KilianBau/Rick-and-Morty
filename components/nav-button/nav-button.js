@@ -10,7 +10,7 @@ export function nextPage() {
     page++;
   }
   const url = `https://rickandmortyapi.com/api/character/?page=${page}`;
-  console.log(url);
+  // console.log(url);
   fetchCharacters(url);
 }
 
@@ -22,7 +22,7 @@ export function prevPage() {
     page--;
   }
   const url = `https://rickandmortyapi.com/api/character/?page=${page}`;
-  console.log(url);
+  // console.log(url);
   fetchCharacters(url);
 }
 
