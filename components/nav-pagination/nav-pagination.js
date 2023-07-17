@@ -3,5 +3,5 @@ import { maxPage, pagination } from "../../index.js";
 
 export function changePagination() {
   pagination.textContent = `${page} / ${maxPage}`;
-  console.log(pagination.textContent);
+  // console.log(pagination.textContent);
 }
