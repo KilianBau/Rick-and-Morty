@@ -3,6 +3,7 @@ console.clear();
 // import
 import { createCharacterCard } from "./components/card/card.js";
 import { nextPage, prevPage } from "./components/nav-button/nav-button.js";
+import { changePagination } from "./components/nav-pagination/nav-pagination.js";
 
 // variables
 export const cardContainer = document.querySelector(
@@ -15,10 +16,10 @@ const searchBar = document.querySelector('[data-js="search-bar"]');
 const navigation = document.querySelector('[data-js="navigation"]');
 export const prevButton = document.querySelector('[data-js="button-prev"]');
 export const nextButton = document.querySelector('[data-js="button-next"]');
-const pagination = document.querySelector('[data-js="pagination"]');
+export const pagination = document.querySelector('[data-js="pagination"]');
 
 // States
-export let maxPage = 1;
+export let maxPage;
 // export let page = 1;
 const searchQuery = "";
 
@@ -49,6 +50,7 @@ export async function fetchCharacters(url) {
         const occurrences = character.episode.length;
 
         createCharacterCard(charName, source, status, type, occurrences);
+        changePagination();
       });
     } else {
       console.log("Response is not okeee");

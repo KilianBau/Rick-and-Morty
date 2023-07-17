@@ -1,6 +1,6 @@
 import { fetchCharacters, cardContainer, maxPage } from "../../index.js";
 
-let page = 1;
+export let page = 1;
 
 export function nextPage() {
   cardContainer.innerHTML = "";
