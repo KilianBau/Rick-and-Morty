@@ -2,29 +2,33 @@ console.clear();
 
 // import
 import { createCharacterCard } from "./components/card/card.js";
+import { nextPage, prevPage } from "./components/nav-button/nav-button.js";
+import { changePagination } from "./components/nav-pagination/nav-pagination.js";
 
 // variables
-const cardContainer = document.querySelector('[data-js="card-container"]');
+export const cardContainer = document.querySelector(
+  '[data-js="card-container"]'
+);
 const searchBarContainer = document.querySelector(
   '[data-js="search-bar-container"]'
 );
 const searchBar = document.querySelector('[data-js="search-bar"]');
 const navigation = document.querySelector('[data-js="navigation"]');
-const prevButton = document.querySelector('[data-js="button-prev"]');
-const nextButton = document.querySelector('[data-js="button-next"]');
-const pagination = document.querySelector('[data-js="pagination"]');
+export const prevButton = document.querySelector('[data-js="button-prev"]');
+export const nextButton = document.querySelector('[data-js="button-next"]');
+export const pagination = document.querySelector('[data-js="pagination"]');
 
 // States
-const maxPage = 1;
-const page = 1;
+export let maxPage;
+// export let page = 1;
 const searchQuery = "";
 
-const url = "https://rickandmortyapi.com/api/character";
+const firstUrl = "https://rickandmortyapi.com/api/character/?page=1";
 
 // ------------------------------------------
 
 // fetchData funciton
-async function fetchCharacters() {
+export async function fetchCharacters(url) {
   try {
     const response = await fetch(url);
     console.log(response);
@@ -35,6 +39,9 @@ async function fetchCharacters() {
       const characters = result.results;
       console.log(characters);
 
+      maxPage = result.info.pages;
+      console.log(maxPage);
+
       characters.forEach((character) => {
         const charName = character.name;
         const source = character.image;
@@ -43,6 +50,7 @@ async function fetchCharacters() {
         const occurrences = character.episode.length;
 
         createCharacterCard(charName, source, status, type, occurrences);
+        changePagination();
       });
     } else {
       console.log("Response is not okeee");
@@ -52,4 +60,7 @@ async function fetchCharacters() {
   }
 }
 
-fetchCharacters();
+fetchCharacters(firstUrl);
+
+nextButton.addEventListener("click", nextPage);
+prevButton.addEventListener("click", prevPage);
